@@ -21,4 +21,13 @@ public class MainCircle extends SimpleFigure{
         this.x+=dx;
         this.y+=dy;
     }
+
+    public void iniRadius() {
+        radius=INIT_RADIUS;
+
+    }
+
+    public void growRadius(SimpleFigure circle) {
+        radius=(int)Math.sqrt(Math.pow(radius,2)+Math.pow(circle.radius,2));
+    }
 }

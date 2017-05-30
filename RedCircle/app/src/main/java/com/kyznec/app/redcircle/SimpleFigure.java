@@ -1,8 +1,5 @@
 package com.kyznec.app.redcircle;
 
-/**
- * Created by root on 5/19/17.
- */
 
 public class SimpleFigure {
 
@@ -37,5 +34,13 @@ public class SimpleFigure {
     }
     public  void setColor(int color){
         this.color=color;
+    }
+
+    public SimpleFigure getCircleArea() {
+        return new SimpleFigure(this.x,this.y,this.radius*2);
+    }
+
+    public boolean isIntersect(SimpleFigure mainCircleArea) {
+        return radius+mainCircleArea.radius>=Math.sqrt(Math.pow(x-mainCircleArea.x,2)+Math.pow(y-mainCircleArea.y,2));
     }
 }

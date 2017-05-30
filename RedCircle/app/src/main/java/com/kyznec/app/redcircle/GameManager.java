@@ -32,7 +32,10 @@ public class GameManager {
         enemies= new ArrayList<EnemyCircle>();
         for (int i=0;i<ENEMYCOUNT;i++){
             EnemyCircle circle;
-            circle=EnemyCircle.getRandomCircle();
+            SimpleFigure mainCircleArea=mainCircle.getCircleArea();
+            do{
+            circle=EnemyCircle.getRandomCircle();}
+            while (circle.isIntersect(mainCircleArea));
             enemies.add(circle);
         }
         calcilateAndSetCircleColor();
@@ -67,5 +70,45 @@ for(EnemyCircle circle:enemies){
 
     public void onTouchEvent(int x, int y) {
         mainCircle.moveMainCercleWhenTougchAt(x,y);
+        checkCollision();
+        moveCircles();
+    }
+
+    private void checkCollision() {
+        SimpleFigure circleForDel=null;
+        for(EnemyCircle circle:enemies){
+            if (mainCircle.isIntersect(circle)){
+                if(circle.isSmallerThan(mainCircle)){
+                    mainCircle.growRadius(circle);
+                    circleForDel=circle;
+                    calcilateAndSetCircleColor();
+                    break;
+                } else {
+                    gameEnd("YOU LOSE!");
+                    return;
+                }
+            }
+
+        }
+        if(circleForDel!=null){
+            enemies.remove(circleForDel);
+        }
+        if(enemies.isEmpty()){
+            gameEnd("YOU WIN!!!");
+        }
+    }
+
+    private void gameEnd(String text) {
+        canvasView.showMessege(text);
+        mainCircle.iniRadius();
+        initEnemyCircles();
+        canvasView.reDraw();
+    }
+
+    private void moveCircles(){
+        for(EnemyCircle circle:enemies){
+            circle.moveOneStep();
+
+        }
     }
 }
